@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, MapPin, Star, Clock, DollarSign, Filter, Globe } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import VoiceSearch from '@/components/VoiceSearch';
+import MapComponent from '@/components/MapComponent';
 import { toast } from 'sonner';
 
 // Mock data for skill providers
@@ -187,25 +187,7 @@ const MapSearch = () => {
           <div className="flex-1 flex flex-col gap-6">
             {/* Map */}
             <div className="bg-white rounded-xl shadow-md overflow-hidden">
-              <div className="h-96 bg-gray-100 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-gray-400">Interactive Map Coming Soon</p>
-                </div>
-                
-                {/* Mock map pins */}
-                {MOCK_PROVIDERS.map((provider) => (
-                  <div 
-                    key={provider.id}
-                    className={`absolute w-8 h-8 rounded-full flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2 ${provider.available ? 'bg-green-500' : 'bg-gray-400'}`}
-                    style={{ 
-                      left: `${30 + Math.random() * 600}px`, 
-                      top: `${30 + Math.random() * 300}px` 
-                    }}
-                  >
-                    <MapPin className="text-white" size={16} />
-                  </div>
-                ))}
-              </div>
+              <MapComponent providers={filteredProviders} />
             </div>
             
             {/* Results list */}
