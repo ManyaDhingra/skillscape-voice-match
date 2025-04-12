@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, MapPin, Star, Clock, DollarSign, Filter } from 'lucide-react';
+import { Search, MapPin, Star, Clock, DollarSign, Filter, Globe } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import VoiceSearch from '@/components/VoiceSearch';
+import { toast } from 'sonner';
 
 // Mock data for skill providers
 const MOCK_PROVIDERS = [
@@ -74,6 +76,7 @@ const MapSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSkill, setSelectedSkill] = useState('');
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
+  const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null);
   
   // Filter providers based on search and filters
   const filteredProviders = MOCK_PROVIDERS.filter(provider => {
@@ -94,12 +97,43 @@ const MapSearch = () => {
   // Get unique skills for the filter
   const uniqueSkills = Array.from(new Set(MOCK_PROVIDERS.map(p => p.skill)));
 
+  // Handle voice search results
+  const handleVoiceSearchResult = (transcript: string) => {
+    // Simulate language detection (in a real app, you'd use a language detection API)
+    const languages = ['English', 'Hindi', 'Spanish', 'French', 'Mandarin'];
+    const detectedLang = languages[Math.floor(Math.random() * languages.length)];
+    
+    setDetectedLanguage(detectedLang);
+    setSearchTerm(transcript);
+    
+    toast.success(`Detected language: ${detectedLang}`);
+    console.log(`Voice input: "${transcript}" (detected as ${detectedLang})`);
+  };
+
   return (
     <div className="min-h-screen bg-[#F4F7F6]">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left sidebar - Search and filters */}
           <div className="w-full md:w-80 bg-white rounded-xl shadow-md p-4">
+            <div className="mb-4">
+              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2 mb-2">
+                <Globe size={20} className="text-[#1EAEDB]" />
+                Speak Your Skill
+              </h2>
+              <p className="text-sm text-gray-600 mb-3">
+                Speak in any language to search for skills
+              </p>
+              <div className="flex items-center justify-between">
+                <VoiceSearch onSearchResult={handleVoiceSearchResult} />
+                {detectedLanguage && (
+                  <div className="text-xs bg-[#1EAEDB]/10 text-[#1EAEDB] px-2 py-1 rounded">
+                    Detected: {detectedLanguage}
+                  </div>
+                )}
+              </div>
+            </div>
+            
             <div className="relative">
               <Search className="absolute left-3 top-3 text-gray-400" size={18} />
               <Input
