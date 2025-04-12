@@ -23,3 +23,32 @@
 .mapboxgl-popup-content {
   @apply p-4 bg-white text-gray-800;
 }
+
+/* User location marker pulse effect */
+.user-location-marker {
+  position: relative;
+}
+
+.user-location-marker::after {
+  content: '';
+  position: absolute;
+  width: 300%;
+  height: 300%;
+  left: -100%;
+  top: -100%;
+  background-color: rgba(30, 174, 219, 0.3);
+  border-radius: 50%;
+  z-index: -1;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
